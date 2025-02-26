@@ -1,11 +1,13 @@
 Localizing open-sources AI models using ollma and Open-WebUI running on docker.
-#  Deploying Ollama and Open WebUI on docker.
+#  Deploying Ollama and Open WebUI on docker.'
+
+**Configuring GPU resources**
 ...
 # Importing AI-models from Ollama.
 ...
 # Setting up the web chat interface.
 ...
-# Implementing RAG(Retrival Augmented Generator)
+# Implementing RAG(Retrival Augmented Generation)
 ...
 
 # Manage Docker Containers with `manage_containers.sh`
