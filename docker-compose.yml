@@ -33,7 +33,7 @@ services:
       - OLLAMA_BASE_URL=http://ollama:11434
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    restart: always
+    restart: unless-stopped
 
   chromadb:
     image: chromadb/chroma

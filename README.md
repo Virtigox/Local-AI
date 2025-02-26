@@ -1,53 +1,110 @@
 Localizing open-sources AI models using ollma and Open-WebUI running on docker.
 
-# Manage Containers on Dockers `manage_containers.sh`
-> The provided shell script is designed to manage Docker containers named "ollama", "open-WebUI", and "chromadb". Here's a step-by-step explanation of how the script works:
+# Manage Docker Containers with `manage_containers.sh`
 
-- Container Definitions: The script starts by defining an array of container names (CONTAINERS), which include "ollama", "open-WebUI", and "chromadb".
-- Starting Containers: The start_containers function uses docker compose up -d, which starts all defined containers in detached mode (running them in the background).
-- Stopping Containers: The stop_containers function stops all specified containers using docker stop.
-- Restarting Containers: The restart_containers function first stops all containers and then restarts them, effectively cycling their state.
-- Checking Container Status: The status_containers function displays the status of each container, including their names and ports, using docker ps --format.
-- Accessing Container Shell: The shell_containers function allows access to a container's shell by first verifying that the provided container name is valid and then checking if it's running. If so, it executes either /bin/bash or sh in the container.
-- Help Menu: The help_containers function provides usage information for all available commands, making it easy to understand how to interact with the script.
-- Command Handling: The script processes user input through a series of cases:
-    1. start: Starts all containers.
-    2. stop: Stops all containers.
-    3. restart: Restarts all containers by stopping and then starting them.
-    4. status: Displays the current status of all containers.
-    5. shell `<container_name>`: Grants access to the shell of a specified container, if valid and running.
-    6. help: Displays help information.
+## Overview
 
-**Example Usage**:
+This script provides an easy way to manage Docker containers running Ollama, Open-WebUI, and ChromaDB. It allows users to start, stop, restart, check status, list, and access the shell of specific containers.
 
-To start all containers:
-```
-bash
-./script.sh start
-```
-To stop all containers:
-```
-bash
-./script.sh stop
-```
-To restart all containers:
-```
-bash
-./script.sh restart
-```
+## Features
 
-To check container status:
+- Start Containers: Starts all specified containers using Docker Compose.
+
+- Stop Containers: Gracefully stops all specified containers.
+
+- Restart Containers: Stops and then restarts all specified containers.
+
+- Check Status: Displays the status of all running containers.
+
+- List Containers: Lists all containers, including stopped ones.
+
+- Access Shell: Opens an interactive shell session inside a running container.
+
+- Help Menu: Provides a guide on how to use the script.
+
+## Prerequisites
+
+- Docker and Docker Compose must be installed and configured.
+
+- Ensure that the necessary container images are available.
+
+- Run the script from the directory containing the docker-compose.yml file.
+
+## Installation
+
+1. Clone or copy the script into your system.
+
+2.  Make the script executable:
 ```
-bash
-./script.sh status
-```
-To access a container's shell (e.g., "ollama"):
-```
-bash
-./script.sh shell ollama
+chmod +x manage_containers.sh
 ```
 
-**Notes**:
->- Ensure Docker and Docker Compose are installed and properly configured.
->- The script assumes all containers are exposed without additional security measures, which may not be suitable for production environments.
->- If a container is not in the predefined list, accessing its shell will result in an error.
+## Usage 
+
+**Start Containers**
+
+Starts **Ollama**, **Open-WebUI**, and **ChromaDB** in detached mode.
+```
+./manage_containers.sh start
+```
+
+**Stop Containers**
+
+Stops the running containers gracefully.
+```
+./manage_containers.sh stop
+```
+
+**Restart Containers**
+
+Restarts all specified containers.
+```
+./manage_containers.sh restart
+```
+
+**Check Container Status**
+
+Displays the current status of running containers.
+```
+./manage_containers.sh status
+```
+
+**List All Containers (Including Stopped Ones)**
+```
+./manage_containers.sh list
+```
+
+**Access a Container's Shell**
+
+Open an interactive shell in a running container.
+```
+./manage_containers.sh shell <container_name>
+```
+Example:
+```
+./manage_containers.sh shell ollama
+```
+
+**Help Menu**
+
+Displays available commands and their usage.
+```
+./manage_containers.sh help
+```
+
+## Notes
+
+- The script only manages Ollama, Open-WebUI, and ChromaDB containers.
+- If a container is not in the predefined list, accessing its shell will result in an error.
+- The script assumes all containers are properly defined in the `docker-compose.yml` file.
+
+
+## Troubleshooting
+
+**Containers are not starting?**
+- Ensure Docker is running: systemctl status docker (Linux) or check Docker Desktop (Windows/Mac).
+- Verify `docker-compose.yml` exists in the working directory.
+
+**Cannot access a container's shell?**
+- Ensure the container is running using `./manage_containers status`.
+- Confirm the container name is correct.

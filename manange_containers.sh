@@ -29,6 +29,11 @@ status_containers() {
    docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 }
 
+# Fucntion to list the all the containers (running + stopped)
+list_containers() {
+    echo "☝️  Listing Containers..."
+    docker ps -a  --format "table {{.Image}}\t{{.Names}}\t{{.CreatedAt}}\t{{.Status}}\t{{.Ports}}"
+}
 # Function to access a container's shell
 shell_containers() {
     local container_name="$1"  # Use second argument as container name
@@ -89,13 +94,16 @@ case "$1" in
         restart_containers
         ;;
     status)
-	status_containers
+	    status_containers
 	;;
     shell)
-    shell_containers "$2"
+        shell_containers "$2"
+    ;;
+    list)
+        list_containers
     ;;
     help)
-    help_containers
+        help_containers
     ;;
     *)
         echo "❌ Usage: $0 {start|stop|restart|status|shell|help}"
