@@ -1,5 +1,5 @@
 Localizing open-sources AI models using ollma and Open-WebUI running on docker.
-#  Deploying Ollama and Open WebUI on dockers.
+#  Deploying Ollama and Open WebUI on docker.
 ...
 # Importing AI-models from Ollama.
 ...
