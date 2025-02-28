@@ -1,5 +1,113 @@
 Localizing open-sources AI models using ollma and Open-WebUI running on docker.
 #  Deploying Ollama and Open WebUI on docker.'
+## Running Docker on Window's WSL2
+### Step 1: Install Docker and NVIDIA Container ToolKit**
+**Enable WSL2 and Install Ubuntu**
+1. Open **PowerShell as Administrator** and enable WSL:
+```
+wsl --install
+```
+2. Restart your PC if prompted
+3. Check available distros:
+```
+wsl -l -o
+```
+4. Install **Ubuntu**(if not installed)
+```
+wsl --install -d Ubuntu
+```
+5. Open **Ubuntu** from the Start Menu or PowerShell and update packages:
+```
+sudo apt update && sudo apt upgrade -y
+```
+
+**Install Docker on WSL2**
+1. Unistall Old versions(If installed)
+```
+sudo apt remove docker docker-engine docker.io containerd runc
+```
+2. Install Docker Dependencies
+```
+sudo apt update
+sudo apt install -y ca-certificate curl gnupg
+```
+3. Add Docker GPG Key
+```
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo tee /etc/apt/keyrings/docker.asc > /dev/null
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+```
+4. Add Docker Repository
+```
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+5. Install Docker
+```
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+6. Start and Enable Docker
+```
+sudo service docker start
+sudo systemctl enable docker
+```
+7. Allow Docker to Run Without `sudo`
+```
+sudo usermod -aG docker $USER
+newgrp docker
+```
+8. Verify Docker Installation
+```
+docker --version
+docker run hello-world
+```
+
+**Install NVIDIA Container ToolKit**
+> Prerequisite: Ensure you have NVIDIA GPU drivers installed on Windows.
+
+1. Setup Nvidia Container ToolKit Repository
+```
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+&& curl -s -L https://nvidia.github.io/libnvidia-container/gpgkey | sudo apt-key add - \
+&& curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+```
+2. Install NVIDIA Container ToolKit
+```
+sudo apt update
+sudo apt install -y nvidia-container-toolkit
+```
+3. Configure Docker to Use NVIDIA Runtime
+```
+sudo nvidia-ctk runtime configure --runtime=docker
+sudo systemctl restart docker
+```
+4. Test NVIDIA with Docker
+```
+docker run --rm --gpus all nvidia/cuda:12.0-base nvidia-smi
+```
+
+**Verfiy the installations
+1. Check **Docker Service**
+```
+systemctl status docker
+```
+if not running, start it manually:
+```
+sudo service docker start
+```
+2. Run **NVIDIA test container**:
+```
+docker run --rm --gpus all nvidia/cuda:12.0-base nvidia-smi
+```
+Expected Output
+```
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI ...                                                              |
+| GPU  Name        Persistence-M | Bus-Id        | Display Active |
++-----------------------------------------------------------------------------+
+```
+
+
 
 **Configuring GPU resources**
 ...
