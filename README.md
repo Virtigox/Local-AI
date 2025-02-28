@@ -86,7 +86,7 @@ sudo systemctl restart docker
 docker run --rm --gpus all nvidia/cuda:12.0-base nvidia-smi
 ```
 
-**Verfiy the installations
+**Verfiy the installations**
 1. Check **Docker Service**
 ```
 systemctl status docker
@@ -98,6 +98,10 @@ sudo service docker start
 2. Run **NVIDIA test container**:
 ```
 docker run --rm --gpus all nvidia/cuda:12.0-base nvidia-smi
+```
+or
+```
+nvidia-smi
 ```
 Expected Output
 ```
