@@ -30,6 +30,8 @@ This script provides an easy way to manage Docker containers running Ollama, Ope
 
 - Access Shell: Opens an interactive shell session inside a running container.
 
+- Check Resource Utilization: Displaying the usage of system resources, including Nvidia GPU by the containers. 
+
 - Help Menu: Provides a guide on how to use the script.
 
 ## Prerequisites
@@ -93,6 +95,11 @@ Open an interactive shell in a running container.
 Example:
 ```
 ./manage_containers.sh shell ollama
+```
+
+**Display usage of system resources**
+```
+./manage_containers.sh resources
 ```
 
 **Help Menu**

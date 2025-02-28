@@ -34,6 +34,7 @@ list_containers() {
     echo "☝️  Listing Containers..."
     docker ps -a  --format "table {{.Image}}\t{{.Names}}\t{{.CreatedAt}}\t{{.Status}}\t{{.Ports}}"
 }
+
 # Function to access a container's shell
 shell_containers() {
     local container_name="$1"  # Use second argument as container name
@@ -68,6 +69,21 @@ shell_containers() {
     fi
 }
 
+check_resources_utilization() {
+    echo "🔍 Checking the resources that have being used.."
+
+    # Check utilization for containers
+    docker stats --no-stream
+
+    # Check NVIDIA GPU status if available
+    if command -v nvidia-smi &> /dev/null; then
+        echo -e "\n✅ NVIDIA GPU Utilization:"
+        nvidia-smi
+    else
+        echo -e "⚠️  No NVIDIA GPU detected or drivers not installed. "
+    fi
+}
+
 help_containers() {
     echo "
 Usage: $0 {start|stop|restart|status|shell <container_name>}
@@ -78,6 +94,8 @@ Commands:
   restart       Restart all containers
   status        Show the status of all containers
   shell <name>  Access the shell of a running container (e.g., 'ollama')
+  list          Listing containers including that had stopped.
+  resources     Checking the resources that have being utilized by containers
 "
 }
 
@@ -101,6 +119,9 @@ case "$1" in
     ;;
     list)
         list_containers
+    ;;
+    resources)
+        check_resources_utilization
     ;;
     help)
         help_containers
