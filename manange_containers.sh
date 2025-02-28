@@ -77,7 +77,7 @@ check_resources_utilization() {
 
     # Check NVIDIA GPU status if available
     if command -v nvidia-smi &> /dev/null; then
-        echo -e "\n✅ NVIDIA GPU Utilization:"
+        echo -e "\✅ NVIDIA GPU Utilization:"
         nvidia-smi
     else
         echo -e "⚠️  No NVIDIA GPU detected or drivers not installed. "
