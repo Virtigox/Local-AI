@@ -157,17 +157,16 @@ docker-compose --version
 if not, install Docker Compose
 ```
 sudo apt install docker-compose -y
-
+```
 3. Build Docker Images(No Cache)
 ```
-docker-composse build --no-cache
+docker-compose build --no-cache
 ```
 4. Start Containers
 ```
-Start Containers
+docker-compose up -d
 ```
 
-...
 # Importing AI-models from Ollama.
 ...
 # Setting up the web chat interface.
