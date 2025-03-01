@@ -1,7 +1,6 @@
 Localizing open-sources AI models using ollma and Open-WebUI running on docker.
-#  Deploying Ollama and Open WebUI on docker.'
-## Running Docker on Window's WSL2
-### Step 1: Install Docker and NVIDIA Container ToolKit**
+
+# Step 1: Running Docker on Window's WSL2
 **Enable WSL2 and Install Ubuntu**
 1. Open **PowerShell as Administrator** and enable WSL:
 ```
@@ -111,9 +110,63 @@ Expected Output
 +-----------------------------------------------------------------------------+
 ```
 
+## Configuring GPU resources in `docker-compose.yml`
+**For NIVIDIA GPU (CUDA)**
+> Depending on system's GPU(NVIDIA, AMD, AMD, or no GPU), may need to adjust the `docker-compose.yml`
+```
+services:
+  ollama:
+    image: ollama/ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all 
+              capabilities: [gpu]
+```
+> For multiple GPUs, change `count:all` to `count:1` or other value.
+**For AMD GPUs(ROCm)**
+> If system has AMD GPU, replace the NVIDIA-specific configuration with followingL
+```
+services:
+  ollama:
+    image: rocm/ollama
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    group_add:
+      - video
+```
+> Ensure that ROCm drivers are installed and properly configured on your system.
+**Running without a GPU(CPU Mode)**
+> If system does not have dedicated GPU, simply **remove** the `deploy` or `devices` section from config file. The definition should look like this:
+```
+services:
+  ollama:
+    image: ollama/ollama
+```
+> Running AI models on CPU may be significantly slower compared to GPU accleration, but it still better than nothing.
 
+# Step2: Deploying Ollama and Open WebUI on docker
+1. Clone or copy the provided the `docker-compose` file
+2. Ensure to have Docker Compose
+```
+docker-compose --version
+```
+if not, install Docker Compose
+```
+sudo apt install docker-compose -y
 
-**Configuring GPU resources**
+3. Build Docker Images(No Cache)
+```
+docker-composse build --no-cache
+```
+4. Start Containers
+```
+Start Containers
+```
+
 ...
 # Importing AI-models from Ollama.
 ...

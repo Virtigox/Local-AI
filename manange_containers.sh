@@ -3,16 +3,27 @@
 # Define container names
 CONTAINERS=("ollama" "open-WebUI" "chromadb")
 
+# Function to compose the docker config file
+docker_build() {
+    if command docker-compose &> /dev/null; then
+        echo "🛠️  Building Docker images... "
+        docker_compose build --no-cache
+    else
+        echo "❌ Error: docker-compose not found. Please install Docker Compose."
+        exit 1
+    fi
+}
+
 # Function to start containers
 start_containers() {
-    echo "🚀 Starting Ollama and Open WebUI..."
+    echo "🚀 Starting containers: ${CONTAINERS[*]}..."
     docker compose up -d
     echo "✅ Containers started successfully!"
 }
 
 # Function to stop containers
 stop_containers() {
-    echo "🛑 Stopping Ollama and Open WebUI..."
+    echo "🛑 Stopping containers: ${CONTAINERS[*]}..."
     docker stop "${CONTAINERS[@]}"
     echo "✅ Containers stopped!"
 }
@@ -96,6 +107,7 @@ Commands:
   shell <name>  Access the shell of a running container (e.g., 'ollama')
   list          Listing containers including that had stopped.
   resources     Checking the resources that have being utilized by containers
+  build         Building Docker Images(No Cache)
 "
 }
 
@@ -125,6 +137,9 @@ case "$1" in
     ;;
     help)
         help_containers
+    ;;
+    build)
+        docker_build
     ;;
     *)
         echo "❌ Usage: $0 {start|stop|restart|status|shell|help}"
