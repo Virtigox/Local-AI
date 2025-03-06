@@ -1,5 +1,4 @@
-```
-html
+```html
 <style>
   .border-box {
     border: 2px solid white;
