@@ -148,7 +148,7 @@ services:
 ```
 > Running AI models on CPU may be significantly slower compared to GPU accleration, but it still better than nothing.
 
-# Step2: Deploying Ollama and Open WebUI on docker
+# Step 2: Deploying Ollama and Open WebUI on docker
 1. Clone or copy the provided the `docker-compose` file
 2. Ensure to have Docker Compose
 ```
@@ -168,11 +168,62 @@ docker-compose up -d
 ```
 
 # Importing AI-models from Ollama.
+> Make sure `Ollama` container is running. If not start the ollama container.
+**Access the Ollama Container's Shell**
+```
+docker exec -it ollama /bin/bash
+```
+**Install AI Models Insider the Container**
+```
+ollama pull <model-name>
+```
+**Check out the AI Models on Ollama Website**
+> [ollama_web](https://ollama.com/search)
+
+**Verify Installed Models**
+>This will display all available models inside the Ollama container.
+```
+ollama list
+```
+**Run an AI Model**
+>To test a model inside the Ollama container's terminal
+```
+ollama run <model-name>
+```
+> Exit from the model
+```
+/bye
+```
+**Exit the Container's Shell**
+```
+exit
+```
+> Now, Ollama will stay running in the background with the installed models.
+
+
+# Setting up the web chat interface `Open-WebUI`
+> - The interface is nearly identical to OpenAI's ChatGPT
+> - Make sure `Open-WebUI` container is running.
+1. Open Open-WebUI in your browser using `http://localhost:3000/`
+2. Select the installed model to start the chat.
+3. Start chatting!
 ...
-# Setting up the web chat interface.
-...
-# Implementing RAG(Retrival Augmented Generation)
-...
+# Implementing RAG(Retrival Augmented Generation) in Open-WebUI
+>- Open WebUI natively supports ChromaDB for vector storage, making it easy to integrate RAG.
+**Install & Configure Open WebUI with ChromaDB**
+>- ChromaDB is already configured and installed on docker.
+**Adjust Open WebUI Knowledge Settings for Better Retrieval**
+1. Go to: `Settings → Knowledge`
+2. Modify:
+    - Chunk Size: Set it to 512 tokens (or experiment with 256–1024 for optimal performance).
+    - Chunk Overlap: 20–30% overlap to ensure context continuity.
+    - Enable Document Indexing: This helps Open WebUI retrieve chunks efficiently.
+**Add & Index Documents**
+To populate the database:
+1. Navigate to `Knowledge Base` in Open WebUI.
+> Customize your own AI-Model to retrive particular documents.
+2. Upload documents (TXT, PDF, Markdown).
+3. Click Process & Index to embed them into ChromaDB.
 
 # Manage Docker Containers with `manage_containers.sh`
 
