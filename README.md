@@ -1,7 +1,9 @@
+```
 ┌──────────────────────────────────────────────────────────────┐
 │  Localizing Open-Source AI (LLMs) models using Ollama and    │
 │  Open-WebUI running on Docker.                               │
 └──────────────────────────────────────────────────────────────┘
+```
 
 # Step 1: Running Docker on Window's WSL2
 **Enable WSL2 and Install Ubuntu**
