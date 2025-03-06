@@ -95,6 +95,11 @@ check_resources_utilization() {
     fi
 }
 
+Local_AI_Set_Up() {
+
+    # follow the step by step and setting up everything automatically.
+}
+
 help_containers() {
     echo "
 Usage: $0 {start|stop|restart|status|shell <container_name>}
