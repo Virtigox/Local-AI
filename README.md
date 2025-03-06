@@ -1,6 +1,17 @@
-<div style="border: 2px solid white; padding: 10px; display: inline-block;">
-  <strong>Localizing Open-Source AI(LLMs) models using ollma and Open-WebUI running on docker.</strong>
+```
+html
+<style>
+  .border-box {
+    border: 2px solid white;
+    padding: 10px;
+    display: inline-block;
+  }
+</style>
+<div class="border-box">
+  <strong>Localizing Open-Source AI (LLMs) models using Ollama and Open-WebUI running on Docker.</strong>
 </div>
+
+```
 
 # Step 1: Running Docker on Window's WSL2
 **Enable WSL2 and Install Ubuntu**
