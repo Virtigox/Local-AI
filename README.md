@@ -1,4 +1,6 @@
-Localizing Open-Source AI(LLMs) models using ollma and Open-WebUI running on docker.
+<div style="border:2px white; padding: 10px; display: inline-block;">
+  <strong>Localizing Open-Source AI(LLMs) models using ollma and Open-WebUI running on docker.</strong>
+</div>
 
 # Step 1: Running Docker on Window's WSL2
 **Enable WSL2 and Install Ubuntu**
@@ -228,7 +230,15 @@ To populate the database:
 3. Click Process & Index to embed them into ChromaDB.
 
 # Manage Docker Containers with `manage_containers.sh`
-
+To run the script:
+1. Give the permission to execute.
+```
+chmod +x manage_containers.sh
+```
+2. Run the scrip with a feature
+```
+./manage_containers <feature>
+```
 ## Overview
 
 This script provides an easy way to manage Docker containers running Ollama, Open-WebUI, and ChromaDB. It allows users to start, stop, restart, check status, list, and access the shell of specific containers.
