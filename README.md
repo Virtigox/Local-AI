@@ -1,4 +1,4 @@
-Localizing open-sources AI models using ollma and Open-WebUI running on docker.
+Localizing Open-Source AI(LLMs) models using ollma and Open-WebUI running on docker.
 
 # Step 1: Running Docker on Window's WSL2
 **Enable WSL2 and Install Ubuntu**
@@ -70,7 +70,7 @@ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
 && curl -s -L https://nvidia.github.io/libnvidia-container/gpgkey | sudo apt-key add - \
 && curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
 ```
-2. Install NVIDIA Container ToolKit
+2. Install NVIDIA Container ToolKit:
 ```
 sudo apt update
 sudo apt install -y nvidia-container-toolkit
@@ -86,7 +86,7 @@ docker run --rm --gpus all nvidia/cuda:12.0-base nvidia-smi
 ```
 
 **Verfiy the installations**
-1. Check **Docker Service**
+1. Check **Docker Service**:
 ```
 systemctl status docker
 ```
@@ -110,9 +110,10 @@ Expected Output
 +-----------------------------------------------------------------------------+
 ```
 
-## Configuring GPU resources in `docker-compose.yml`
+## Step 2: Configuring GPU resources in `docker-compose.yml`
+
 **For NIVIDIA GPU (CUDA)**
-> Depending on system's GPU(NVIDIA, AMD, AMD, or no GPU), may need to adjust the `docker-compose.yml`
+> Depending on system's GPU(NVIDIA, AMD, or no GPU), may need to adjust the `docker-compose.yml`
 ```
 services:
   ollama:
@@ -126,6 +127,7 @@ services:
               capabilities: [gpu]
 ```
 > For multiple GPUs, change `count:all` to `count:1` or other value.
+
 **For AMD GPUs(ROCm)**
 > If system has AMD GPU, replace the NVIDIA-specific configuration with followingL
 ```
@@ -139,6 +141,7 @@ services:
       - video
 ```
 > Ensure that ROCm drivers are installed and properly configured on your system.
+
 **Running without a GPU(CPU Mode)**
 > If system does not have dedicated GPU, simply **remove** the `deploy` or `devices` section from config file. The definition should look like this:
 ```
@@ -150,25 +153,25 @@ services:
 
 # Step 2: Deploying Ollama and Open WebUI on docker
 1. Clone or copy the provided the `docker-compose` file
-2. Ensure to have Docker Compose
+2. Ensure to have Docker Compose installed:
 ```
 docker-compose --version
 ```
-if not, install Docker Compose
+if not, install Docker Compose:
 ```
 sudo apt install docker-compose -y
 ```
-3. Build Docker Images(No Cache)
+3. Build Docker Images(No Cache):
 ```
 docker-compose build --no-cache
 ```
-4. Start Containers
+4. Start Containers:
 ```
 docker-compose up -d
 ```
 
 # Importing AI-models from Ollama.
-> Make sure `Ollama` container is running. If not start the ollama container.
+> Ensure `Ollama` container is running. If not start the ollama container.
 **Access the Ollama Container's Shell**
 ```
 docker exec -it ollama /bin/bash
@@ -177,8 +180,7 @@ docker exec -it ollama /bin/bash
 ```
 ollama pull <model-name>
 ```
-**Check out the AI Models on Ollama Website**
-> [ollama_web](https://ollama.com/search)
+**Check available AI Models on [Ollama's Website](https://ollama.com/search)**
 
 **Verify Installed Models**
 >This will display all available models inside the Ollama container.
@@ -203,11 +205,11 @@ exit
 
 # Setting up the web chat interface `Open-WebUI`
 > - The interface is nearly identical to OpenAI's ChatGPT
-> - Make sure `Open-WebUI` container is running.
-1. Open Open-WebUI in your browser using `http://localhost:3000/`
+> - Ensure `Open-WebUI` container is running.
+1. Open, and set up the account for Open-WebUI in your browser using `http://localhost:3000/`
 2. Select the installed model to start the chat.
 3. Start chatting!
-...
+
 # Implementing RAG(Retrival Augmented Generation) in Open-WebUI
 >- Open WebUI natively supports ChromaDB for vector storage, making it easy to integrate RAG.
 **Install & Configure Open WebUI with ChromaDB**
