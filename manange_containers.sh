@@ -95,10 +95,6 @@ check_resources_utilization() {
     fi
 }
 
-Local_AI_Set_Up() {
-
-    # follow the step by step and setting up everything automatically.
-}
 
 help_containers() {
     echo "
