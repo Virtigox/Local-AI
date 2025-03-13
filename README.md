@@ -4,6 +4,10 @@
 │  Open-WebUI running on Docker.                               │
 └──────────────────────────────────────────────────────────────┘
 ```
+# Hardware Requirements
+- Setting up your AI model with Ollama+OpenWebUI on Docker requires certain hardware specification.
+- Depending on size of AI models, processing needs, and specific workloads, the requirements will be varied.
+- For detail hardware requirements, please read [hardware-requirement-guide](./Hardware-Requirement.md)
 
 # Step 1: Running Docker on Window's WSL2
 **Enable WSL2 and Install Ubuntu**
