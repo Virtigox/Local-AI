@@ -11,7 +11,7 @@ The use case and importance of each component will differ depending on whether t
 Model parameters (e.g., Llama 3.1 8B: 8 billion parameters), which represent the learned variables within an AI model, directly influence hardware requirements, particularly memory usage. 
 
 - A 7 billion parameter model typically requires around **28GB of memory** when using full precision (FP32) or about **14GB** when using mixed precision (FP16). 
-- However, distilled models are smaller and more efficient than their original counterparts. To make them feasible for devices with limited resources, they often utilize lower mixed precision and other optimization techniques. As a result, it is possible to run an 8 billion parameter model on **8GB of VRAM**, though this may come at the cost of reduced token production per second.
+- However, distilled models are smaller and more efficient than their original counterparts. Additionally, there are smaller models,to make them feasible for devices with limited resources, they often utilize lower mixed precision and other optimization techniques. As a result, it is possible to run an 8 billion parameter model on **8GB of VRAM**, though this may come at the cost of reduced token production per second.
 
 ---
 
