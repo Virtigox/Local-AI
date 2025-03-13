@@ -96,6 +96,65 @@ check_resources_utilization() {
 }
 
 
+
+
+# Function to check and update each image
+# 1.  pull the $IMAGE, monitor:display the progess of pulling the image
+# 2. Get the digest file, get the latest digest files, and compare with the current container image
+# 3. If different, which means newer verion is released, prompt the user whether update to newer version or not.
+# 4. Stop and Delete the old containers.
+# 5. Loop all the containers in the docker.
+# 6. Start the dockers with newer containers.
+
+check_update() {
+    local IMAGE=$1
+
+    echo "🔍 Checking for updates for $IMAGE..."
+
+    # Step 1: Capture existing image IDs before pulling the update
+    OLD_IMAGE_IDS=$(docker images --format "{{.ID}} {{.Repository}}:{{.Tag}}" | grep "$IMAGE" | awk '{print $1}')
+
+    # Step 2: Pull the latest image
+    docker pull "$IMAGE"
+
+    # Step 3: Get the latest image ID after the pull
+    NEW_IMAGE_ID=$(docker images --format "{{.ID}} {{.Repository}}:{{.Tag}}" | grep "$IMAGE" | awk '{print $1}' | head -n 1)
+
+    # Step 4: Get the currently running, and also stopped container ID (if any)
+    CONTAINER_ID=$(docker ps -a -q --filter "ancestor=$IMAGE")
+
+    # Step 5: Compare old and new image IDs
+    if echo "$OLD_IMAGE_IDS" | grep -q "$NEW_IMAGE_ID"; then
+        echo "✅ $IMAGE is already up to date."
+    else
+        echo "🚀 New version detected for $IMAGE."
+
+        read -p "Would you like to update? (YES: y / NO: n): " RESPONSE
+
+        if [[ "$RESPONSE" == "y" ]]; then
+            echo "🔄 Updating $IMAGE..."
+
+            # Step 6: Stop and remove the running container (if any)
+            if [[ ! -z "$CONTAINER_ID" ]]; then
+                echo "🛑 Stopping container $CONTAINER_ID..."
+                docker stop "$CONTAINER_ID"
+                docker rm "$CONTAINER_ID"
+            fi
+
+            # Step 7: Remove old images (excluding the new one)
+            echo "🗑️ Removing old versions of $IMAGE..."
+            echo "$OLD_IMAGE_IDS" | grep -v "$NEW_IMAGE_ID" | xargs -r docker rmi
+
+            echo "✅ $IMAGE has been updated!"
+        else
+            echo "⏭️ Skipping update for $IMAGE."
+        fi
+    fi
+}
+
+
+
+
 help_containers() {
     echo "
 Usage: $0 {start|stop|restart|status|shell <container_name>}
@@ -109,6 +168,7 @@ Commands:
   list          Listing containers including that had stopped.
   resources     Checking the resources that have being utilized by containers
   build         Building Docker Images(No Cache)
+  update        Update container & image versions
 "
 }
 
@@ -136,6 +196,16 @@ case "$1" in
     resources)
         check_resources_utilization
     ;;
+    update)
+        # Define container images
+        IMAGES=("ollama/ollama" "ghcr.io/open-webui/open-webui" "chromadb/chroma")
+        for IMAGE in "${IMAGES[@]}"; do
+            check_update "$IMAGE" # pass $IMAGE as an argument
+        done
+        # Restart with the new image (Modify if needed for your setup)
+        echo "🚀 Restarting with the new image..."
+        docker compose up -d --force-recreate    
+    ;;
     help)
         help_containers
     ;;
@@ -143,7 +213,7 @@ case "$1" in
         docker_build
     ;;
     *)
-        echo "❌ Usage: $0 {start|stop|restart|status|shell|help}"
+        echo "❌ Usage: $0 {start|stop|restart|status|shell|help|build|update}"
         exit 1
         ;;
 esac

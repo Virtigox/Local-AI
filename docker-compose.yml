@@ -1,4 +1,4 @@
-version: "3.8"
+
 
 services:
   ollama:
@@ -23,7 +23,7 @@ services:
     restart: unless-stopped
 
   open-webui:
-    image: ghcr.io/open-webui/open-webui:main
+    image: ghcr.io/open-webui/open-webui:latest
     container_name: open-WebUI
     ports:
       - "3000:8080"
@@ -45,6 +45,8 @@ services:
     restart: unless-stopped
 
 volumes:
+# Store the data separately from the containers
+# This will save the data from deletion of the containers for newer version update
   ollama_data:
   openwebui_Data:
   chromadb_data:

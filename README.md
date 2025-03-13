@@ -262,6 +262,8 @@ This script provides an easy way to manage Docker containers running Ollama, Ope
 
 - Check Resource Utilization: Displaying the usage of system resources, including Nvidia GPU by the containers. 
 
+- Update containers:  Updates containers and images with the latest available versions. Decision of updating will be prompted.
+
 - Help Menu: Provides a guide on how to use the script.
 
 ## Prerequisites
@@ -332,6 +334,10 @@ Example:
 ./manage_containers.sh resources
 ```
 
+**Update Containers**
+```
+./manage_containers.sh update
+```
 **Help Menu**
 
 Displays available commands and their usage.
