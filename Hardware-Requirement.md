@@ -15,6 +15,79 @@ Model parameters (e.g., Llama 3.1 8B: 8 billion parameters), which represent the
 
 ---
 
+# VRAM Calculation Formula for Running LLMs
+> To estimate the GPU memory (VRAM) required to run a large language model (LLM), use the following formula:  
+$$\text{VRAM Required} = \text {Number of Parameters (in billions)} × \text{Bytes per Parameter} × \text{Overhead Factor}$$
+
+This formula provides a reliable estimate of the **GPU memory needed** to load and run a model efficiently. Learn more [here](https://twm.me/posts/calculate-vram-requirements-local-llms/).  
+
+**1. Number of Parameters**  
+This represents the total number of model weights, typically expressed in **billions (B)**:  
+
+- **LLaMA-13B** → 13 billion parameters  
+- **DeepSeek-V2-67B** → 67 billion parameters  
+- **GPT-4 (estimated)** → 1.76 trillion parameters  
+
+---
+
+## **2. Bytes per Parameter (Precision Level)**  
+The amount of VRAM required **depends on the numerical precision** used for storing the model weights:  
+
+| Precision | Bytes per Parameter | Notes |
+|-----------|---------------------|-------|
+| **FP32 (Full Precision)** | 4 bytes | High accuracy but very memory-intensive |
+| **FP16 (Half Precision)** | 2 bytes | Common for GPUs with Tensor Cores |
+| **INT8 (8-bit Quantization)** | 1 byte | Reduces memory, minor accuracy loss |
+| **INT4 (4-bit Quantization)** | 0.5 bytes | Best for low VRAM usage, may impact performance |
+
+> **Lower precision reduces memory usage but may slightly degrade accuracy.**  
+> **FP16** is widely used on modern GPUs for an optimal balance of memory efficiency and precision.  
+
+---
+
+## **3. Overhead Factor**  
+Additional VRAM is needed beyond just model weights to account for:  
+
+- **Activations** (temporary tensors generated during inference)  
+- **Framework overhead** (PyTorch, TensorFlow, etc.)  
+- **GPU memory fragmentation**  
+
+### **Recommended Overhead Factors**  
+
+| Model Type | Overhead Factor |
+|------------|----------------|
+| **Text/Coding Models** | **1.15** (15% extra memory) |
+| **Reasoning LLMs** | **1.25** (25% extra memory) |
+| **Audio Models** | **1.30** (30% extra memory) |
+| **Video Models** | **1.40** (40% extra memory) |
+
+For most **LLM inference**, a **15% buffer (×1.15)** is sufficient.  
+
+---
+
+## **4. VRAM Calculation Examples**  
+
+### **Example 1: Running `LLaMA-70B` in `FP16`**  
+- **Model Size:** 70 billion parameters  
+- **Precision:** FP16 (**2 bytes per parameter**)  
+- **Overhead Factor:** **1.15** (15%)  
+- VRAM Required = 70 × 2 × 1.15 = 161 GB
+
+>  **INT4 quantization reduces VRAM usage by 75%, making the model fit into a 48GB GPU (e.g., RTX 6000 Ada, A100 40GB).**  
+
+---
+
+## **5. System RAM Considerations**  
+
+### **What If VRAM Is Insufficient?**  
+- If the **GPU VRAM is too low**, **LLMs use system RAM (swap memory or offloading)**, significantly reducing performance.  
+- **32GB+ RAM** is preferable for running large models on CPU or when VRAM is limited.  
+
+### **Unified Memory Architectures**  
+Some hardware, such as **Apple’s M-series chips**, uses **Unified Memory**, where RAM is shared seamlessly between CPU & GPU. This reduces the need for explicit VRAM.  
+
+---
+
 # Hardware Requirements for AI Use
 
 For those experimenting with AI or running smaller models with limited performance but functional workflows, a basic hardware configuration can serve as an entry point without significant investment. 
