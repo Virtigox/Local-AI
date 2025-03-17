@@ -95,7 +95,30 @@ check_resources_utilization() {
     fi
 }
 
+# calculate how many VRAM or RAM needed to run a particular model
+calculate_ram_usage() {
+    echo "🧮 Calculating the required VRAM/RAM for the model..."
 
+    # Get user input
+    read -p "Enter the number of parameters (in billions): " PARAMETER
+    read -p "Enter the precision (FP32=32, FP16=16, INT8=8, INT4=4): " PRECISION
+    read -p "Enter the overhead factor (1.15, 1.25, 1.30, 1.40): " OVERHEAD
+
+    # Convert precision to bytes per parameter
+    case $PRECISION in
+        32) BYTES_PER_PARAM=4 ;;
+        16) BYTES_PER_PARAM=2 ;;
+        8)  BYTES_PER_PARAM=1 ;;
+        4)  BYTES_PER_PARAM=0.5 ;;
+        *) echo "❌ Invalid precision! Choose 32, 16, 8, or 4."; return ;;
+    esac
+
+    # Calculate VRAM requirement using bc for floating-point math
+    VRAMREQUIRED=$(echo "$PARAMETER * $BYTES_PER_PARAM * $OVERHEAD" | bc)
+
+    # Display result
+    echo "🖥️  The system needs approximately **$VRAMREQUIRED GB** of VRAM/RAM to run this model."
+}
 
 
 # Function to check and update each image
@@ -169,6 +192,7 @@ Commands:
   resources     Checking the resources that have being utilized by containers
   build         Building Docker Images(No Cache)
   update        Update container & image versions
+  cal_ram Calculate the VRAM/RAM required for the system to run the model
 "
 }
 
@@ -209,11 +233,14 @@ case "$1" in
     help)
         help_containers
     ;;
+    cal_ram)
+        calculate_ram_usage
+    ;;
     build)
         docker_build
     ;;
     *)
-        echo "❌ Usage: $0 {start|stop|restart|status|shell|help|build|update}"
+        echo "❌ Usage: $0 {start|stop|restart|status|shell|help|build|update|cal_ram}"
         exit 1
         ;;
 esac
