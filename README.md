@@ -4,6 +4,7 @@
 │  Open-WebUI running on Docker.                               │
 └──────────────────────────────────────────────────────────────┘
 ```
+![Docker Image for running LLMs locally](Docker-Image.png)
 # Hardware Requirements
 - Setting up your AI model with Ollama+OpenWebUI on Docker requires certain hardware specification.
 - Depending on size of AI models, processing needs, and specific workloads, the requirements will be varied.
